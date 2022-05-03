@@ -1,0 +1,5 @@
+Insert into student values("abcd","S_888");
+Insert into student values("efgh","S_008");
+Insert into student values("ijkl","s555");
+Insert into student values("mnop","ss@123");
+Insert into student values("abcd","s000");
