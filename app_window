@@ -1,0 +1,129 @@
+package studentcrud;
+
+import java.awt.EventQueue;
+import java.sql.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import javax.swing.JSeparator;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+//import java.sql.*;
+public class login {
+
+	private JFrame frame;
+	private JTextField usrfield;
+	private JPasswordField passwordField;
+	private JPasswordField passwordfield;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					login window = new login();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public login() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Login System");
+		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 21));
+		lblNewLabel.setBounds(134, 11, 123, 30);
+		frame.getContentPane().add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("User Name");
+		lblNewLabel_1.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		lblNewLabel_1.setBounds(51, 84, 96, 30);
+		frame.getContentPane().add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Password");
+		lblNewLabel_2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		lblNewLabel_2.setBounds(51, 140, 94, 30);
+		frame.getContentPane().add(lblNewLabel_2);
+		
+		usrfield = new JTextField();
+		usrfield.setBounds(188, 84, 200, 30);
+		frame.getContentPane().add(usrfield);
+		usrfield.setColumns(10);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(389, 147, -194, 20);
+		frame.getContentPane().add(passwordField);
+		
+		passwordfield = new JPasswordField();
+		passwordfield.setBounds(188, 140, 200, 27);
+		frame.getContentPane().add(passwordfield);
+		
+		JButton loginbutton = new JButton("Login");
+		loginbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				String u=usrfield.getText();
+				String p=passwordfield.getText();
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/studentdb","root","sowndharya");
+					PreparedStatement pre=con.prepareStatement("select name,password from student where name= ? and password=?");
+					pre.setString(1, u);
+					pre.setString(2, p);
+					ResultSet rs=pre.executeQuery();
+					if(rs.next()) {
+						JOptionPane.showMessageDialog(loginbutton, "Login successfully");
+					}
+					else {
+						JOptionPane.showMessageDialog(loginbutton, "Login unsuccessfull");
+					}
+					con.close();
+				}
+				catch(Exception e1) {
+					System.out.println(e1);
+				}
+			}
+		});
+		loginbutton.setBounds(106, 209, 89, 23);
+		frame.getContentPane().add(loginbutton);
+		
+		JButton exitbutton = new JButton("Exit");
+		exitbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		exitbutton.setBounds(242, 209, 89, 23);
+		frame.getContentPane().add(exitbutton);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(51, 68, 349, 2);
+		frame.getContentPane().add(separator);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(51, 196, 349, 2);
+		frame.getContentPane().add(separator_1);
+	}
+}
